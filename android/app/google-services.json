@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "787401806121",
+    "project_id": "football-pitches-4771c",
+    "storage_bucket": "football-pitches-4771c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:787401806121:android:8c734f1ef4236335cce738",
+        "android_client_info": {
+          "package_name": "com.example.football_field_management_demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "787401806121-ir10prm2cvuriib17cl262jpldq53dbe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.football_field_management_demo",
+            "certificate_hash": "d96ce0671500abdd3e0eb87a28f9e981722bb61f"
+          }
+        },
+        {
+          "client_id": "787401806121-7sobcrnivn6fiq9npvl75eaq7326ia5n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdJvOmh2OFNbsSpMw7JP5kbN3KGRThn6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "787401806121-7sobcrnivn6fiq9npvl75eaq7326ia5n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
