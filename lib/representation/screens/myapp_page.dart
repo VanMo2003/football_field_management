@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:football_field_management_demo/representation/screens/home/home_screens.dart';
+import 'package:football_field_management_demo/representation/screens/home/user_screens.dart';
 import 'package:football_field_management_demo/representation/screens/information/enter_information.dart';
 import 'package:football_field_management_demo/representation/screens/home/manage_screens.dart';
 import 'package:football_field_management_demo/representation/screens/registor/registor.dart';
@@ -33,9 +35,9 @@ class MyAppPage extends StatelessWidget {
             );
           }
           if (state is HomeState) {
-            // debugPrint('${state.permission}');
-            return ManageHomeScreens();
+            return HomeScreens();
           }
+
           return Container();
         },
       ),

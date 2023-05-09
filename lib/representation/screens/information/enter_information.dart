@@ -101,13 +101,12 @@ class _EnterInformationSreensState extends State<EnterInformationSreens> {
               nameField.text,
               address.text,
               int.parse(numberYard.text),
+              true,
             );
           } else {
             debugPrint('${nameUser.text} - ${numberPhome.text} ');
-            await UserDatabaseServices(uid: widget.uid).updateManage(
-              nameUser.text,
-              numberPhome.text,
-            );
+            await UserDatabaseServices(uid: widget.uid)
+                .updateManage(nameUser.text, numberPhome.text, false);
           }
         },
       );

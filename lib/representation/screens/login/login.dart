@@ -140,9 +140,6 @@ class _SignInScreensState extends State<SignInScreens> {
     Future.delayed(
       const Duration(seconds: 1),
       () async {
-        setState(() {
-          isLoading = false;
-        });
         if (_keyForm.currentState!.validate()) {
           debugPrint('email: ${_email.text}');
           debugPrint('password: ${_password.text}');
@@ -151,11 +148,12 @@ class _SignInScreensState extends State<SignInScreens> {
             _email.text,
             _password.text,
           );
+          setState(() {
+            isLoading = false;
+          });
+
           if (result == 'Successfully') {
             context.read<MyAppBLoc>().add(const LoginEvent());
-
-            debugPrint('uid: ${result.uid}');
-
             debugPrint('Login Successfully');
           } else {
             Future.delayed(
@@ -163,12 +161,14 @@ class _SignInScreensState extends State<SignInScreens> {
               () {
                 setState(() {
                   error = result;
+                  debugPrint('Login Faild');
                 });
               },
             );
           }
         } else {
           setState(() {
+            isLoading = false;
             error = '';
           });
         }

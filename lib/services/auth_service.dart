@@ -1,15 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:football_field_management_demo/core/constants/check_permistion.dart';
 import 'package:football_field_management_demo/models/account.dart';
 import 'package:football_field_management_demo/services/manage_database_services.dart';
 import 'package:football_field_management_demo/services/user_database_services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  //! create user obj based on FirebaseUser
+  // final storage = new FlutterSecureStorage();
+
   AccountModel? _userFromFirebaseUser(User? user) {
+    debugPrint('error ${user?.uid}');
     return user != null ? AccountModel(uid: user.uid) : null;
   }
 
@@ -25,12 +30,12 @@ class AuthServices {
         email: email,
         password: password,
       );
-
-      _userFromFirebaseUser(result.user);
+      User? user = result.user;
+      _userFromFirebaseUser(user);
       return 'Successfully';
     } on FirebaseAuthException catch (e) {
       debugPrint('Failed with error code: ${e.code}');
-      return e.message;
+      return e.code.toString();
     }
   }
 
@@ -38,7 +43,7 @@ class AuthServices {
   Future registorWithEmailAndPassword(
       String email, String password, String permission) async {
     try {
-      UserCredential? result = await _auth.createUserWithEmailAndPassword(
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -48,20 +53,35 @@ class AuthServices {
       //! create a new document for the user with the uid
       if (CheckPermission.checkPermission(permission)) {
         await ManageDatabaseServices(uid: user!.uid)
-            .updateManage('', '', '', 0);
+            .updateManage('', '', '', 0, true);
       } else {
-        await UserDatabaseServices(uid: user!.uid).updateManage('', '');
+        await UserDatabaseServices(uid: user!.uid).updateManage('', '', false);
       }
 
-      _userFromFirebaseUser(user);
-      return 'Successfully';
+      return _userFromFirebaseUser(user);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        return 'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
-        return 'The account already exists for that email.';
-      }
-      return e.message;
+      debugPrint('Failed with error code: ${e.toString()}');
+      return null;
+    }
+  }
+
+  Future<void> setManage(String uid, String permission) async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setBool(uid, true);
+  }
+
+  //! check login
+  bool isLogin() {
+    return _auth.currentUser != null;
+  }
+
+  //! sign out
+  Future signOut() async {
+    try {
+      return await _auth.signOut();
+    } catch (e) {
+      debugPrint(e.toString());
+      return null;
     }
   }
 
@@ -73,16 +93,6 @@ class AuthServices {
       User? user = result.user;
 
       return _userFromFirebaseUser(user);
-    } catch (e) {
-      debugPrint(e.toString());
-      return null;
-    }
-  }
-
-  //! sign out
-  Future signOut() async {
-    try {
-      return await _auth.signOut();
     } catch (e) {
       debugPrint(e.toString());
       return null;

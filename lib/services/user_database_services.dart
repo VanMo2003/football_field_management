@@ -8,10 +8,12 @@ class UserDatabaseServices {
   final CollectionReference _collectionReference =
       FirebaseFirestore.instance.collection('user');
 
-  Future updateManage(String nameUser, String phoneNumber) async {
+  Future updateManage(
+      String nameUser, String phoneNumber, bool permission) async {
     return await _collectionReference.doc(uid).set({
       'name_user': nameUser,
       'phome_number': phoneNumber,
+      'permission': permission,
     }).then((value) => debugPrint('$_collectionReference'));
   }
 }

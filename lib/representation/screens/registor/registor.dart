@@ -1,8 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:football_field_management_demo/core/constants/boder_value.dart';
+import 'package:football_field_management_demo/core/constants/check_permistion.dart';
 import 'package:football_field_management_demo/core/constants/text_style.dart';
 import 'package:football_field_management_demo/core/constants/value_theme.dart';
 import 'package:football_field_management_demo/core/helper/assets_helper.dart';
@@ -12,6 +11,7 @@ import 'package:football_field_management_demo/representation/widgets/registor/d
 import 'package:football_field_management_demo/representation/widgets/loading.dart';
 import 'package:football_field_management_demo/representation/widgets/text_field_login.dart';
 import 'package:football_field_management_demo/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 import '../../../blocs/login_bloc/export_bloc.dart';
 
@@ -65,7 +65,6 @@ class _RegistorScreensState extends State<RegistorScreens> {
                       textPermission,
                       (value) {
                         setState(() {
-                          debugPrint('haha');
                           textPermission = value.toString();
                         });
                         return null;
@@ -152,46 +151,44 @@ class _RegistorScreensState extends State<RegistorScreens> {
       isLoading = true;
     });
     Future.delayed(
-      const Duration(seconds: 1),
+      const Duration(milliseconds: 900),
       () async {
-        setState(() {
-          isLoading = false;
-        });
         if (_keyForm.currentState!.validate()) {
           debugPrint('email: ${_email.text}');
           debugPrint('password: ${_password.text}');
           dynamic result;
+
           if (textPermission == '') {
-            result = 'You must choose the access right';
+            setState(() {
+              isLoading = false;
+              error = 'You must choose the access right';
+            });
           } else {
             result = await authServices.registorWithEmailAndPassword(
-              _email.text,
-              _password.text,
-              textPermission,
-            );
-
-            if (result == 'Successfully') {
+                _email.text, _password.text, textPermission);
+            setState(() {
+              isLoading = false;
+            });
+            if (result != null) {
+              if (CheckPermission.checkPermission(textPermission)) {
+                authServices.setManage(result.uid, textPermission);
+                debugPrint('set mange successfully');
+              }
               context
                   .read<MyAppBLoc>()
                   .add(RegistorEvent(result.uid, textPermission));
 
               debugPrint('Registor Successfully');
+            } else {
+              setState(() {
+                error = result;
+                debugPrint('Registor Faild');
+              });
             }
           }
-          Future.delayed(
-            const Duration(seconds: 1),
-            () {
-              setState(() {
-                if (result != 'Successfully') {
-                  error = result;
-                }
-              });
-            },
-          );
-
-          debugPrint('Registor Faild');
         } else {
           setState(() {
+            isLoading = false;
             error = '';
           });
         }

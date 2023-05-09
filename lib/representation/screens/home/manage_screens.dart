@@ -15,10 +15,10 @@ class ManageHomeScreens extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AccountModel>(context);
+    final user = Provider.of<AccountModel?>(context);
 
     return StreamProvider<Manage?>.value(
-      value: ManageDatabaseServices(uid: user.uid).manage,
+      value: ManageDatabaseServices(uid: user?.uid).manage,
       initialData: Manage(),
       builder: (context, child) {
         return Scaffold(
