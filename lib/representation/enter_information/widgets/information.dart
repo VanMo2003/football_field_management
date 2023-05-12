@@ -3,7 +3,7 @@ import 'package:football_field_management_demo/core/constants/text_style.dart';
 import 'package:football_field_management_demo/core/helper/assets_helper.dart';
 import 'package:football_field_management_demo/representation/widgets/box_text_field.dart';
 import 'package:football_field_management_demo/representation/widgets/button_login.dart';
-import 'package:football_field_management_demo/representation/widgets/information/button.dart';
+import 'package:football_field_management_demo/representation/enter_information/widgets/button.dart';
 
 class CheckWidgetInformation {
   static Widget manageWidget(

@@ -4,17 +4,13 @@ import 'package:football_field_management_demo/core/constants/check_permistion.d
 import 'package:football_field_management_demo/models/account.dart';
 import 'package:football_field_management_demo/services/manage_database_services.dart';
 import 'package:football_field_management_demo/services/user_database_services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  // final storage = new FlutterSecureStorage();
-
   AccountModel? _userFromFirebaseUser(User? user) {
-    debugPrint('error ${user?.uid}');
     return user != null ? AccountModel(uid: user.uid) : null;
   }
 
@@ -31,11 +27,10 @@ class AuthServices {
         password: password,
       );
       User? user = result.user;
-      _userFromFirebaseUser(user);
-      return 'Successfully';
+      return _userFromFirebaseUser(user);
     } on FirebaseAuthException catch (e) {
       debugPrint('Failed with error code: ${e.code}');
-      return e.code.toString();
+      return null;
     }
   }
 
@@ -68,6 +63,11 @@ class AuthServices {
   Future<void> setManage(String uid, String permission) async {
     final SharedPreferences prefs = await _prefs;
     await prefs.setBool(uid, true);
+  }
+
+  Future<bool?> getPermission(String? uid) async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getBool(uid ?? '');
   }
 
   //! check login

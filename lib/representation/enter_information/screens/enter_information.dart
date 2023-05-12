@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:football_field_management_demo/core/constants/check_permistion.dart';
 import 'package:football_field_management_demo/representation/widgets/background_login.dart';
-import 'package:football_field_management_demo/representation/widgets/information/information.dart';
+import 'package:football_field_management_demo/representation/enter_information/widgets/information.dart';
 import 'package:football_field_management_demo/representation/widgets/loading.dart';
 import 'package:football_field_management_demo/services/manage_database_services.dart';
 import 'package:football_field_management_demo/services/user_database_services.dart';
@@ -91,7 +91,7 @@ class _EnterInformationSreensState extends State<EnterInformationSreens> {
           setState(() {
             isLoading = false;
           });
-          context.read<MyAppBLoc>().add(const LoginEvent());
+          context.read<MyAppBLoc>().add(LoginEvent(widget.uid));
 
           if (CheckPermission.checkPermission(widget.permission)) {
             debugPrint(

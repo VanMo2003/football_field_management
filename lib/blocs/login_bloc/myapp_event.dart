@@ -3,7 +3,8 @@ abstract class MyAppEvent {
 }
 
 class LoginEvent extends MyAppEvent {
-  const LoginEvent();
+  LoginEvent(this.uid);
+  String uid;
 }
 
 class LoginAndRegistorEvent extends MyAppEvent {

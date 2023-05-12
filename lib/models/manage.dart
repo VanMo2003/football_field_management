@@ -2,7 +2,7 @@ class Manage {
   final String? address;
   final String? nameField;
   final String? nameManage;
-  final String? numberYard;
+  final int? numberYard;
   final bool? checkPermission;
 
   Manage({

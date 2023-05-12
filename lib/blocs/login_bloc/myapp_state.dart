@@ -22,5 +22,6 @@ class InformationState extends MyAppState {
 }
 
 class HomeState extends MyAppState {
-  const HomeState();
+  HomeState(this.uid);
+  String? uid;
 }

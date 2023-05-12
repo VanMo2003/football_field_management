@@ -18,7 +18,7 @@ class MyAppBLoc extends Bloc<MyAppEvent, MyAppState> {
   }
 
   void login(LoginEvent event, Emitter<MyAppState> emit) {
-    emit(HomeState());
+    emit(HomeState(event.uid));
   }
 
   void registor(RegistorEvent event, Emitter<MyAppState> emit) {

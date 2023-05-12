@@ -152,8 +152,8 @@ class _SignInScreensState extends State<SignInScreens> {
             isLoading = false;
           });
 
-          if (result == 'Successfully') {
-            context.read<MyAppBLoc>().add(const LoginEvent());
+          if (result != null) {
+            context.read<MyAppBLoc>().add(LoginEvent(result.uid));
             debugPrint('Login Successfully');
           } else {
             Future.delayed(
