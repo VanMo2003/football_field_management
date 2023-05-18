@@ -4,7 +4,7 @@ import 'package:football_field_management_demo/models/manage.dart';
 import 'package:football_field_management_demo/models/user.dart';
 import 'package:football_field_management_demo/representation/home/screens/manage_screens/manage_screens.dart';
 import 'package:football_field_management_demo/representation/home/screens/user_screens/user_screens.dart';
-import 'package:football_field_management_demo/representation/home/widgets/manage_widget/sidebar_page.dart';
+import 'package:football_field_management_demo/representation/home/screens/manage_screens/sidebar_page.dart';
 import 'package:football_field_management_demo/services/auth_service.dart';
 import 'package:football_field_management_demo/services/manage_database_services.dart';
 import 'package:football_field_management_demo/services/user_database_services.dart';

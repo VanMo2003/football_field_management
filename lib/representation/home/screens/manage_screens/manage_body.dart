@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:football_field_management_demo/models/manage.dart';
-import 'package:football_field_management_demo/representation/home/widgets/manage_widget/football_fitches.dart';
+import 'package:football_field_management_demo/representation/home/screens/manage_screens/football_fitches.dart';
 import 'package:provider/provider.dart';
 
 class ManageBody extends StatefulWidget {
@@ -14,6 +14,8 @@ class _ManageBodyState extends State<ManageBody> {
   @override
   Widget build(BuildContext context) {
     final manage = Provider.of<Manage>(context);
+
+    debugPrint('${manage.nameField}');
 
     return Padding(
       padding: const EdgeInsets.all(12),
@@ -32,7 +34,7 @@ class _ManageBodyState extends State<ManageBody> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => FootballPitches(number: index + 1),
+                    builder: (context) => FootballPitches(nameFootballField: manage.nameField ?? '',number: index + 1),
                   ));
             },
             child: Container(

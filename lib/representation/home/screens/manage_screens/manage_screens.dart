@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:football_field_management_demo/core/constants/color_theme.dart';
+import 'package:football_field_management_demo/models/manage.dart';
+import 'package:football_field_management_demo/representation/home/screens/manage_screens/manage_body.dart';
+import 'package:provider/provider.dart';
 
 class ManageHomeScreens extends StatefulWidget {
   const ManageHomeScreens({super.key});
@@ -17,6 +20,7 @@ class _ManageHomeScreensState extends State<ManageHomeScreens> {
 
   @override
   Widget build(BuildContext context) {
+    final manage = Provider.of<Manage>(context);
     Size size = MediaQuery.of(context).size;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
@@ -30,37 +34,39 @@ class _ManageHomeScreensState extends State<ManageHomeScreens> {
         child: SafeArea(
           top: true,
           child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: ColorTheme.colorPrimary,
-              title: const Text('Home Page'),
-              centerTitle: true,
-              leading: GestureDetector(
-                onTap: () {
-                  if (isDrawerOpen) {
-                    setState(() {
-                      xOffset = 0;
-                      yOffset = 0;
-                      isDrawerOpen = false;
-                    });
-                  } else {
-                    setState(() {
-                      xOffset = size.width - 140;
-                      yOffset = size.height / 5;
-                      isDrawerOpen = true;
-                    });
-                  }
-                },
-                child: const Icon(
-                  Icons.menu,
+              appBar: AppBar(
+                backgroundColor: ColorTheme.colorPrimary,
+                title: Text(
+                  '${manage.nameField}',
+                  style: const TextStyle(
+                    fontSize: 32,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                centerTitle: true,
+                toolbarHeight: 100,
+                leading: GestureDetector(
+                  onTap: () {
+                    if (isDrawerOpen) {
+                      setState(() {
+                        xOffset = 0;
+                        yOffset = 0;
+                        isDrawerOpen = false;
+                      });
+                    } else {
+                      setState(() {
+                        xOffset = size.width - 140;
+                        yOffset = size.height / 5;
+                        isDrawerOpen = true;
+                      });
+                    }
+                  },
+                  child: const Icon(
+                    Icons.menu,
+                  ),
                 ),
               ),
-            ),
-            body: const Center(
-                child: Text(
-              'Home Page',
-              style: TextStyle(fontSize: 32),
-            )),
-          ),
+              body: const ManageBody()),
         ),
       ),
     );
