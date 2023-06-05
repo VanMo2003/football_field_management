@@ -4,23 +4,39 @@ import 'package:football_field_management_demo/models/account.dart';
 import 'package:football_field_management_demo/representation/myapp_page.dart';
 import 'package:football_field_management_demo/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class WrapperScreens extends StatelessWidget {
+class WrapperScreens extends StatefulWidget {
   WrapperScreens({super.key});
-  final AuthServices _authServices = AuthServices();
+
+  @override
+  State<WrapperScreens> createState() => _WrapperScreensState();
+}
+
+class _WrapperScreensState extends State<WrapperScreens> {
+  // final AuthServices _authServices = AuthServices();
+  String? emailLogin;
+  bool? permission;
+  @override
+  void initState() {
+    super.initState();
+    getLogin();
+  }
+
+  void getLogin() async {
+    emailLogin = await AuthServices().getLogin();
+    permission = await AuthServices().getPermission();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AccountModel?>(context);
-    if (!_authServices.isLogin()) {
+    if (emailLogin == null) {
       return MyAppPage(
         stateInitial: const LoginState(),
-        uid: user?.uid,
       );
     } else {
       return MyAppPage(
-        stateInitial: HomeState(user?.uid),
-        uid: user?.uid,
+        stateInitial: HomeState(emailLogin!, permission!),
       );
     }
   }

@@ -4,7 +4,10 @@ import 'package:football_field_management_demo/representation/home/screens/manag
 import 'package:provider/provider.dart';
 
 class ManageBody extends StatefulWidget {
-  const ManageBody({super.key});
+  ManageBody({super.key, required this.totalYards, required this.nameField});
+
+  int totalYards;
+  String nameField;
 
   @override
   State<ManageBody> createState() => _ManageBodyState();
@@ -13,14 +16,10 @@ class ManageBody extends StatefulWidget {
 class _ManageBodyState extends State<ManageBody> {
   @override
   Widget build(BuildContext context) {
-    final manage = Provider.of<Manage>(context);
-
-    debugPrint('${manage.nameField}');
-
     return Padding(
       padding: const EdgeInsets.all(12),
       child: GridView.builder(
-        itemCount: manage.numberYard,
+        itemCount: widget.totalYards,
         physics: const BouncingScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -34,7 +33,8 @@ class _ManageBodyState extends State<ManageBody> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => FootballPitches(nameFootballField: manage.nameField ?? '',number: index + 1),
+                    builder: (context) => FootballPitches(
+                        nameField: widget.nameField, number: index + 1),
                   ));
             },
             child: Container(

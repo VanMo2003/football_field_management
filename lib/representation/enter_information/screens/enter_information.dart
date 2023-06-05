@@ -2,22 +2,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:football_field_management_demo/core/constants/check_permistion.dart';
+import 'package:football_field_management_demo/http/model/footbal_field_model.dart';
+import 'package:football_field_management_demo/http/model/user.dart';
+import 'package:football_field_management_demo/http/network/football_field_network.dart';
+import 'package:football_field_management_demo/http/network/user_network.dart';
 import 'package:football_field_management_demo/representation/widgets/background_login.dart';
 import 'package:football_field_management_demo/representation/enter_information/widgets/information.dart';
 import 'package:football_field_management_demo/representation/widgets/loading.dart';
-import 'package:football_field_management_demo/services/manage_database_services.dart';
-import 'package:football_field_management_demo/services/user_database_services.dart';
-import 'package:provider/provider.dart';
 
 import '../../../blocs/login_bloc/export_bloc.dart';
 
 class EnterInformationSreens extends StatefulWidget {
   EnterInformationSreens(
-      {super.key, required this.uid, required this.permission});
+      {super.key, required this.username, required this.permission});
 
-  String uid;
-  String permission;
+  bool permission;
+  String username;
 
   @override
   State<EnterInformationSreens> createState() => _EnterInformationSreensState();
@@ -48,7 +48,7 @@ class _EnterInformationSreensState extends State<EnterInformationSreens> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (CheckPermission.checkPermission(widget.permission)) ...[
+                    if (widget.permission) ...[
                       CheckWidgetInformation.manageWidget(
                         nameManage,
                         nameField,
@@ -58,8 +58,7 @@ class _EnterInformationSreensState extends State<EnterInformationSreens> {
                         error,
                       ),
                     ],
-                    if (!CheckPermission.checkPermission(
-                        widget.permission)) ...[
+                    if (!widget.permission) ...[
                       CheckWidgetInformation.userWidget(
                         nameUser,
                         numberPhome,
@@ -88,25 +87,40 @@ class _EnterInformationSreensState extends State<EnterInformationSreens> {
       Future.delayed(
         const Duration(seconds: 1),
         () async {
+          dynamic result;
+          if (widget.permission) {
+            FootballField footballField = FootballField(
+              username: widget.username,
+              nameFootballField: nameField.text,
+              nameManage: nameManage.text,
+              totalYards: int.parse(numberYard.text),
+            );
+
+            result = await FootballFieldNetwork.postFootballFied(footballField);
+          } else {
+            User user = User(
+              username: widget.username,
+              nameUser: nameUser.text,
+              phoneNumber: numberPhome.text,
+            );
+
+            result = await UserNetwork.postUser(user);
+          }
+
           setState(() {
             isLoading = false;
           });
-          context.read<MyAppBLoc>().add(LoginEvent(widget.uid));
+          if (result == 200) {
+            context
+                .read<MyAppBLoc>()
+                .add(LoginEvent(widget.username, widget.permission));
+          }
 
-          if (CheckPermission.checkPermission(widget.permission)) {
+          if (widget.permission) {
             debugPrint(
                 '${nameManage.text} - ${nameField.text} - ${address.text} - ${numberYard.text}');
-            await ManageDatabaseServices(uid: widget.uid).updateManage(
-              nameManage.text,
-              nameField.text,
-              address.text,
-              int.parse(numberYard.text),
-              true,
-            );
           } else {
             debugPrint('${nameUser.text} - ${numberPhome.text} ');
-            await UserDatabaseServices(uid: widget.uid)
-                .updateManage(nameUser.text, numberPhome.text, false);
           }
         },
       );

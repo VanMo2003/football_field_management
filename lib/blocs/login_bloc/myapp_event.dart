@@ -3,8 +3,9 @@ abstract class MyAppEvent {
 }
 
 class LoginEvent extends MyAppEvent {
-  LoginEvent(this.uid);
-  String uid;
+  LoginEvent(this.username, this.permission);
+  String username;
+  bool permission;
 }
 
 class LoginAndRegistorEvent extends MyAppEvent {
@@ -12,9 +13,9 @@ class LoginAndRegistorEvent extends MyAppEvent {
 }
 
 class RegistorEvent extends MyAppEvent {
-  RegistorEvent(this.uid, this.permission);
-  String uid;
-  String permission;
+  RegistorEvent(this.permission, this.username);
+  bool permission;
+  String username;
 }
 
 class LogoutEnvent extends MyAppEvent {

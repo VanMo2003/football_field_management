@@ -7,6 +7,8 @@ import 'package:football_field_management_demo/blocs/login_bloc/myapp_event.dart
 import 'package:football_field_management_demo/core/constants/text_style.dart';
 import 'package:football_field_management_demo/core/constants/value_theme.dart';
 import 'package:football_field_management_demo/core/helper/assets_helper.dart';
+import 'package:football_field_management_demo/http/model/account.dart';
+import 'package:football_field_management_demo/http/network/account_network.dart';
 import 'package:football_field_management_demo/representation/widgets/background_login.dart';
 import 'package:football_field_management_demo/representation/widgets/button_login.dart';
 import 'package:football_field_management_demo/representation/widgets/loading.dart';
@@ -90,16 +92,13 @@ class _SignInScreensState extends State<SignInScreens> {
                       title: 'Login',
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
-                      child: Center(
-                        child: Text(
-                          error,
-                          style: TextStyle(
-                            color: Colors.red.shade700,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 16,
-                          ),
+                    Center(
+                      child: Text(
+                        error,
+                        style: TextStyle(
+                          color: Colors.red.shade700,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -144,27 +143,26 @@ class _SignInScreensState extends State<SignInScreens> {
           debugPrint('email: ${_email.text}');
           debugPrint('password: ${_password.text}');
 
-          dynamic result = await authServices.signWithEmailAndPassword(
-            _email.text,
-            _password.text,
-          );
+          Account account =
+              Account(userName: _email.text, password: _password.text);
+
+          dynamic result = await AccountNetwork.checkLogin(account);
           setState(() {
             isLoading = false;
           });
 
-          if (result != null) {
-            context.read<MyAppBLoc>().add(LoginEvent(result.uid));
+          if (result == 200) {
+            debugPrint('${result == 'true'}');
+            context
+                .read<MyAppBLoc>()
+                .add(LoginEvent(_email.text, result == 'true'));
             debugPrint('Login Successfully');
           } else {
-            Future.delayed(
-              const Duration(seconds: 1),
-              () {
-                setState(() {
-                  error = result;
-                  debugPrint('Login Faild');
-                });
-              },
-            );
+            setState(() {
+              error = result;
+              debugPrint(error);
+              debugPrint('Login Faild');
+            });
           }
         } else {
           setState(() {

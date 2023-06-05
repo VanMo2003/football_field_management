@@ -16,12 +16,13 @@ class RegistorState extends MyAppState {
 }
 
 class InformationState extends MyAppState {
-  InformationState(this.uid, this.permission);
-  String uid;
-  String permission;
+  InformationState(this.username, this.permission);
+  bool permission;
+  String username;
 }
 
 class HomeState extends MyAppState {
-  HomeState(this.uid);
-  String? uid;
+  HomeState(this.username, this.permission);
+  String username;
+  bool permission;
 }

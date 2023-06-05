@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:football_field_management_demo/core/constants/color_theme.dart';
-import 'package:football_field_management_demo/models/manage.dart';
 import 'package:football_field_management_demo/representation/home/screens/manage_screens/manage_body.dart';
-import 'package:provider/provider.dart';
 
 class ManageHomeScreens extends StatefulWidget {
-  const ManageHomeScreens({super.key});
-
+  ManageHomeScreens(
+      {super.key, required this.nameField, required this.totalYards});
+  String nameField;
+  int totalYards;
   @override
   State<ManageHomeScreens> createState() => _ManageHomeScreensState();
 }
@@ -20,7 +20,6 @@ class _ManageHomeScreensState extends State<ManageHomeScreens> {
 
   @override
   Widget build(BuildContext context) {
-    final manage = Provider.of<Manage>(context);
     Size size = MediaQuery.of(context).size;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
@@ -37,7 +36,7 @@ class _ManageHomeScreensState extends State<ManageHomeScreens> {
               appBar: AppBar(
                 backgroundColor: ColorTheme.colorPrimary,
                 title: Text(
-                  '${manage.nameField}',
+                  widget.nameField,
                   style: const TextStyle(
                     fontSize: 32,
                     fontStyle: FontStyle.italic,
@@ -66,7 +65,10 @@ class _ManageHomeScreensState extends State<ManageHomeScreens> {
                   ),
                 ),
               ),
-              body: const ManageBody()),
+              body: ManageBody(
+                totalYards: widget.totalYards,
+                nameField: widget.nameField,
+              )),
         ),
       ),
     );

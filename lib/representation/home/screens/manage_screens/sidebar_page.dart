@@ -5,17 +5,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:football_field_management_demo/blocs/login_bloc/export_bloc.dart';
 import 'package:football_field_management_demo/representation/home/widgets/manage_widget/message.dart';
 import 'package:football_field_management_demo/representation/home/widgets/manage_widget/new_row.dart';
-import 'package:football_field_management_demo/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class SideBarPage extends StatefulWidget {
-  const SideBarPage({super.key});
+  SideBarPage({super.key, required this.username, required this.nameManage});
+
+  String nameManage;
+  String username;
 
   @override
   State<SideBarPage> createState() => _SideBarPageState();
 }
 
 class _SideBarPageState extends State<SideBarPage> {
-  final AuthServices auth = AuthServices();
+  // final AuthServices auth = AuthServices();
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +32,18 @@ class _SideBarPageState extends State<SideBarPage> {
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  CircleAvatar(
+                children: [
+                  const CircleAvatar(
                     radius: 38,
                     child: Icon(Icons.person),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
-                    'Văn Mỡ',
-                    style: TextStyle(fontSize: 32, color: Colors.white),
+                    widget.nameManage,
+                    style: const TextStyle(fontSize: 32, color: Colors.white),
                   ),
                   Text(
-                    'mjnhhuyen0@gmail.com',
+                    widget.username,
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ],
@@ -101,7 +104,7 @@ class _SideBarPageState extends State<SideBarPage> {
                 onTap: () async {
                   context.read<MyAppBLoc>().add(const LogoutEnvent());
                   debugPrint('sign out');
-                  await auth.signOut();
+                  // await auth.signOut();
                 },
                 isColor: true,
               )

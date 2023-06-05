@@ -10,8 +10,7 @@ import 'package:football_field_management_demo/representation/login/screens/logi
 import '../blocs/login_bloc/export_bloc.dart';
 
 class MyAppPage extends StatelessWidget {
-  MyAppPage({super.key, required this.stateInitial, required this.uid});
-  String? uid;
+  MyAppPage({super.key, required this.stateInitial});
   MyAppState stateInitial;
 
   @override
@@ -30,13 +29,14 @@ class MyAppPage extends StatelessWidget {
           }
           if (state is InformationState) {
             return EnterInformationSreens(
-              uid: uid!,
+              username: state.username,
               permission: state.permission,
             );
           }
-          if (state is HomeState && uid != null) {
+          if (state is HomeState) {
             return HomeScreens(
-              uid: uid,
+              username: state.username,
+              permission: state.permission,
             );
           }
 

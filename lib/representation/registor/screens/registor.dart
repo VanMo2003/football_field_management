@@ -5,12 +5,13 @@ import 'package:football_field_management_demo/core/constants/check_permistion.d
 import 'package:football_field_management_demo/core/constants/text_style.dart';
 import 'package:football_field_management_demo/core/constants/value_theme.dart';
 import 'package:football_field_management_demo/core/helper/assets_helper.dart';
+import 'package:football_field_management_demo/http/model/account.dart';
+import 'package:football_field_management_demo/http/network/account_network.dart';
 import 'package:football_field_management_demo/representation/widgets/background_login.dart';
 import 'package:football_field_management_demo/representation/widgets/button_login.dart';
 import 'package:football_field_management_demo/representation/registor/widgets/dropdown_button.dart';
 import 'package:football_field_management_demo/representation/widgets/loading.dart';
 import 'package:football_field_management_demo/representation/widgets/text_field_login.dart';
-import 'package:football_field_management_demo/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../../blocs/login_bloc/export_bloc.dart';
@@ -23,7 +24,7 @@ class RegistorScreens extends StatefulWidget {
 }
 
 class _RegistorScreensState extends State<RegistorScreens> {
-  final AuthServices authServices = AuthServices();
+  // final AuthServices authServices = AuthServices();
 
   final TextEditingController _email = TextEditingController();
 
@@ -164,20 +165,21 @@ class _RegistorScreensState extends State<RegistorScreens> {
               error = 'You must choose the access right';
             });
           } else {
-            result = await authServices.registorWithEmailAndPassword(
-                _email.text, _password.text, textPermission);
+            Account account = Account(
+              userName: _email.text,
+              password: _password.text,
+              permission: CheckPermission.checkPermission(textPermission),
+            );
+
+            dynamic result = await AccountNetwork.postAccount(account);
+            debugPrint('result: $result');
             setState(() {
               isLoading = false;
             });
-            if (result != null) {
-              if (CheckPermission.checkPermission(textPermission)) {
-                authServices.setManage(result.uid, textPermission);
-                debugPrint('set mange successfully');
-              }
-              context
-                  .read<MyAppBLoc>()
-                  .add(RegistorEvent(result.uid, textPermission));
 
+            if (result == 200) {
+              context.read<MyAppBLoc>().add(
+                  RegistorEvent(account.getPermission ?? false, _email.text));
               debugPrint('Registor Successfully');
             } else {
               setState(() {

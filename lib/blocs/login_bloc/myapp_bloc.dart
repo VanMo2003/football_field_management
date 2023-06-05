@@ -2,6 +2,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:football_field_management_demo/blocs/login_bloc/myapp_event.dart';
 import 'package:football_field_management_demo/blocs/login_bloc/myapp_state.dart';
+import 'package:football_field_management_demo/services/auth_service.dart';
 
 class MyAppBLoc extends Bloc<MyAppEvent, MyAppState> {
   MyAppState stateInitial;
@@ -17,12 +18,13 @@ class MyAppBLoc extends Bloc<MyAppEvent, MyAppState> {
     return super.close();
   }
 
-  void login(LoginEvent event, Emitter<MyAppState> emit) {
-    emit(HomeState(event.uid));
+  void login(LoginEvent event, Emitter<MyAppState> emit) async {
+    await AuthServices().setLogin(event.username, event.permission);
+    emit(HomeState(event.username, event.permission));
   }
 
   void registor(RegistorEvent event, Emitter<MyAppState> emit) {
-    emit(InformationState(event.uid, event.permission));
+    emit(InformationState(event.username, event.permission));
   }
 
   void loginAndRegistor(LoginAndRegistorEvent event, Emitter<MyAppState> emit) {

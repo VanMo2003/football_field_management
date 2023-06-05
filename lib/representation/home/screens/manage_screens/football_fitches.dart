@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:football_field_management_demo/models/https/result_by_number_yard.dart';
-import 'package:football_field_management_demo/network/network_request.dart';
+import 'package:football_field_management_demo/http/network/network_model.dart';
 
 class FootballPitches extends StatefulWidget {
-  FootballPitches(
-      {super.key, required this.nameFootballField, required this.number});
+  FootballPitches({super.key, required this.number, required this.nameField});
 
-  String nameFootballField;
+  String nameField;
   int number;
 
   @override
@@ -14,37 +12,57 @@ class FootballPitches extends StatefulWidget {
 }
 
 class _FootballPitchesState extends State<FootballPitches> {
-  List<ResultByNumberYard>? resultList = [];
-  List<UserInformation>? userInformationList = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    NetworkRequest().fetchPost(widget.nameFootballField, widget.number)
-        .then((value) {
-      debugPrint('loading data number yard 1');
-      setState(() {
-        resultList?.addAll(value!);
-        debugPrint('result : $resultList');
-        resultList?.map((e) {
-          userInformationList = e.data;
-          debugPrint('user : $userInformationList');
-        }).toList();
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sân Số ${widget.number}'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text('Sân số ${widget.number}'),
-      ),
-    );
+        appBar: AppBar(
+          title: Text('Sân Số ${widget.number}'),
+          centerTitle: true,
+        ),
+        body: FutureBuilder(
+          future: NetworkRequest.getUserDataByNumberYard(
+              widget.nameField, widget.number),
+          builder: (context, snapshot) {
+            var data = snapshot.data;
+            if (data == null) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            return ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 24, horizontal: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${data[index].nameUser}(${data[index].phoneNumber})',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '${data[index].timeSlot}(${data[index].dataToday})',
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ));
   }
 }
