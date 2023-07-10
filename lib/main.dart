@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:football_field_management_demo/core/constants/color_theme.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:football_field_management_demo/representation/wrapper.dart';
 
 void main() async {
@@ -16,7 +15,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {  
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

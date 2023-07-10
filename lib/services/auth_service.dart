@@ -6,16 +6,18 @@
 // import 'package:football_field_management_demo/services/user_database_services.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServices {
 //   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  Future<bool> setLogin(String email, bool permission) async {
+  Future<void> setLogin(String email, bool permission) async {
     final SharedPreferences prefs = await _prefs;
     await prefs.setBool('permission', permission);
-    return prefs.setString('login', email);
+    await prefs.setString('login', email);
+    debugPrint('login : $email - $permission');
   }
 
   Future<String?> getLogin() async {

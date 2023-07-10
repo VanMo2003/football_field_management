@@ -8,7 +8,30 @@ import 'package:http/http.dart';
 class FootballFieldNetwork {
   static String url = 'http://localhost:8080/van-mo/FootballField';
 
-  static Future<FootballField> getFootballField(String username) async {
+  static Future<List<FootballField>> getFootballField() async {
+    Uri uri = Uri.parse(url);
+
+    var reponse = await http.get(uri);
+
+    var jsonData = jsonDecode(const Utf8Decoder().convert(reponse.bodyBytes));
+
+    List<FootballField> list = [];
+
+    for (var element in jsonData) {
+      FootballField footballField = FootballField(
+        username: element["username"],
+        nameFootballField: element["nameFootballField"],
+        nameManage: element["nameManage"], 
+        totalYards: element["totalYards"],
+      );
+      list.add(footballField);
+    }
+
+    return list;
+  }
+
+  static Future<FootballField> getFootballFieldByUsername(
+      String username) async {
     Uri uri = Uri.parse('$url/$username');
     debugPrint('$uri');
 
@@ -37,6 +60,7 @@ class FootballFieldNetwork {
     Map<String, String> headers = {
       'Content-type': 'application/json; charset=UTF-8'
     };
+    
     var body = jsonEncode(<String, dynamic>{
       "username": footballField.username,
       "nameFootballField": footballField.nameFootballField,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:football_field_management_demo/models/manage.dart';
 import 'package:football_field_management_demo/representation/home/screens/manage_screens/football_fitches.dart';
-import 'package:provider/provider.dart';
 
 class ManageBody extends StatefulWidget {
   ManageBody({super.key, required this.totalYards, required this.nameField});
@@ -33,8 +31,19 @@ class _ManageBodyState extends State<ManageBody> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => FootballPitches(
-                        nameField: widget.nameField, number: index + 1),
+                    builder: (context) => TweenAnimationBuilder<double>(
+                      tween: Tween<double>(begin: 0.5, end: 1),
+                      duration: const Duration(milliseconds: 300),
+                      builder: (context, value, child) {
+                        return Transform.scale(
+                          scale: value,
+                          child: FootballPitches(
+                            nameField: widget.nameField,
+                            number: index + 1,
+                          ),
+                        );
+                      },
+                    ),
                   ));
             },
             child: Container(

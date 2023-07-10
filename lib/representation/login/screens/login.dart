@@ -150,12 +150,11 @@ class _SignInScreensState extends State<SignInScreens> {
           setState(() {
             isLoading = false;
           });
+          bool check = result == 'true';
 
-          if (result == 200) {
-            debugPrint('${result == 'true'}');
-            context
-                .read<MyAppBLoc>()
-                .add(LoginEvent(_email.text, result == 'true'));
+          if (!check || check) {
+            AuthServices().setLogin(_email.text, check);
+            context.read<MyAppBLoc>().add(LoginEvent(_email.text, check));
             debugPrint('Login Successfully');
           } else {
             setState(() {

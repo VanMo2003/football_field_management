@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:football_field_management_demo/blocs/login_bloc/export_bloc.dart';
-import 'package:football_field_management_demo/models/account.dart';
 import 'package:football_field_management_demo/representation/myapp_page.dart';
 import 'package:football_field_management_demo/services/auth_service.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class WrapperScreens extends StatefulWidget {
   WrapperScreens({super.key});
@@ -20,7 +17,9 @@ class _WrapperScreensState extends State<WrapperScreens> {
   @override
   void initState() {
     super.initState();
+    debugPrint('login : $emailLogin, $permission');
     getLogin();
+    debugPrint('login : $emailLogin, $permission');
   }
 
   void getLogin() async {

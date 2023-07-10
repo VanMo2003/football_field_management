@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:football_field_management_demo/http/network/football_field_network.dart';
-import 'package:football_field_management_demo/representation/home/screens/manage_screens/manage_screens.dart';
+import 'package:football_field_management_demo/representation/home/screens/manage_screens/manage_home.dart';
 import 'package:football_field_management_demo/representation/home/screens/manage_screens/sidebar_page.dart';
+import 'package:football_field_management_demo/representation/widgets/loading.dart';
 
 class ManageScreen extends StatefulWidget {
   ManageScreen({super.key, required this.username});
@@ -16,11 +17,14 @@ class _ManageScreenState extends State<ManageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: FootballFieldNetwork.getFootballField(widget.username),
+        future:
+            FootballFieldNetwork.getFootballFieldByUsername(widget.username),
         builder: (context, snapshot) {
           var data = snapshot.data;
           if (data == null) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: loading(),
+            );
           }
           debugPrint('oke');
 
@@ -39,31 +43,5 @@ class _ManageScreenState extends State<ManageScreen> {
         },
       ),
     );
-
-    //   FutureBuilder(
-    //     future: FootballFieldNetwork.getFootballField(widget.username),
-    //     builder: (context, snapshot) {
-    //       if (snapshot.data == null) {
-    //         return Center(child: const CircularProgressIndicator());
-    //       }
-
-    //       var data = snapshot.data;
-
-    //       return Scaffold(
-    //         body: Stack(
-    //           children: [
-    //             SideBarPage(
-    //               username: data!.username,
-    //               nameManage: data.nameManage,
-    //             ),
-    //             ManageHomeScreens(
-    //               nameField: data.nameFootballField,
-    //               totalYards: data.totalYards,
-    //             ),
-    //           ],
-    //         ),
-    //       );
-    //     },
-    //   );
   }
 }

@@ -10,8 +10,8 @@ class NetworkRequest {
   static Future<List<UserInformation>> getUserDataByNumberYard(
       String nameField, int numberYard) async {
     var response = await http.get(Uri.parse('$url/$nameField/$numberYard'));
+    debugPrint('url : $url/$nameField/$numberYard');
     var jsonData = jsonDecode(const Utf8Decoder().convert(response.bodyBytes));
-    debugPrint('$jsonData');
 
     List<UserInformation> list = [];
     for (var element in jsonData) {
@@ -20,6 +20,7 @@ class NetworkRequest {
       userInformation.phoneNumber = element['phoneNumber'];
       userInformation.timeSlot = element['timeSlot'];
       userInformation.dataToday = element['dataToday'];
+
       list.add(userInformation);
     }
 

@@ -21,11 +21,8 @@ class AccountNetwork {
     });
 
     Response response = await http.post(uri, headers: headers, body: body);
-    debugPrint('${response.statusCode}');
-    debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.statusCode;
-    }
+    // debugPrint(response.body);
+
     return response.body;
   }
 

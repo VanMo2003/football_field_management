@@ -34,8 +34,9 @@ class _SideBarPageState extends State<SideBarPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CircleAvatar(
+                    backgroundColor: Colors.white,
                     radius: 38,
-                    child: Icon(Icons.person),
+                    child: Icon(Icons.person, color: Colors.black),
                   ),
                   const SizedBox(height: 10),
                   Text(

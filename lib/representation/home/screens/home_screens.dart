@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:football_field_management_demo/http/network/football_field_network.dart';
 import 'package:football_field_management_demo/representation/home/screens/manage_screens/manage_screen.dart';
-import 'package:football_field_management_demo/representation/home/screens/manage_screens/manage_screens.dart';
-import 'package:football_field_management_demo/representation/home/screens/manage_screens/sidebar_page.dart';
 import 'package:football_field_management_demo/representation/home/screens/user_screens/user_screens.dart';
 
 class HomeScreens extends StatefulWidget {
@@ -25,7 +22,7 @@ class _HomeScreensState extends State<HomeScreens> {
       );
     } else {
       debugPrint('user');
-      return UserHomeScreens(
+      return UserScreens(
         username: widget.username,
       );
     }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:football_field_management_demo/http/model/footbal_field_model.dart';
 import 'package:football_field_management_demo/http/model/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
